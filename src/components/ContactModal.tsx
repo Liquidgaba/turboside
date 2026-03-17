@@ -31,6 +31,10 @@ export default function ContactModal({ isOpen, onClose, title }: ContactModalPro
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const WEBHOOK_URL = "https://hook.eu2.make.com/zm4plz46j3jq2rgoqj4fsrjpgl1k3v82";
 
   const reset = useCallback(() => {
     setName("");
@@ -40,6 +44,7 @@ export default function ContactModal({ isOpen, onClose, title }: ContactModalPro
     setSubject("");
     setMessage("");
     setSubmitted(false);
+    setSubmitError(null);
   }, []);
 
   const handleClose = useCallback(() => {
@@ -61,17 +66,44 @@ export default function ContactModal({ isOpen, onClose, title }: ContactModalPro
     };
   }, [isOpen, handleClose]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPhoneError(null);
+    setSubmitError(null);
     const err = getPhoneError(phone);
     if (err) {
       setPhoneError(err);
       return;
     }
-    setSubmitted(true);
-    handleClose();
-    router.push("/takk");
+    setSending(true);
+    try {
+      const payload = {
+        name,
+        email,
+        phone: phone.trim() || undefined,
+        turbonumber: turbonumber.trim() || undefined,
+        subject,
+        message,
+        requestTitle: modalTitle,
+        submittedAt: new Date().toISOString(),
+        sourceUrl: typeof window !== "undefined" ? window.location.href : undefined,
+      };
+      const res = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        throw new Error(`Webhook svarte med ${res.status}`);
+      }
+      setSubmitted(true);
+      handleClose();
+      router.push("/takk");
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Kunne ikke sende. Prøv igjen.");
+    } finally {
+      setSending(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -215,12 +247,18 @@ export default function ContactModal({ isOpen, onClose, title }: ContactModalPro
                 placeholder="Beskriv bilen din og hva du trenger..."
               />
             </div>
+            {submitError && (
+              <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
+                {submitError}
+              </p>
+            )}
             <div className="flex gap-3 pt-1">
               <button
                 type="submit"
-                className="flex-1 rounded-full bg-sky-600 py-3 font-medium text-white transition hover:bg-sky-700"
+                disabled={sending}
+                className="flex-1 rounded-full bg-sky-600 py-3 font-medium text-white transition hover:bg-sky-700 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Send forespørsel
+                {sending ? "Sender…" : "Send forespørsel"}
               </button>
               <button
                 type="button"

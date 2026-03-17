@@ -389,7 +389,7 @@ export const MERKE_IMAGES: Record<string, string> = {
   toyota: "/toyota.png",
   nissan: "/nissan.png",
   ford: "/ford.png",
-  hyundai: "/hyundai.png",
+  hyundai: "/hyndai.png",
   kia: "/kia.png",
   mazda: "/mazda.png",
   skoda: "/skoda.png",
