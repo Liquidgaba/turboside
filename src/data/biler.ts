@@ -381,29 +381,29 @@ export const INGRESS_VARIANTS_BY: ((merke: string, modell: string, by: string) =
 
 /** Bilde per merke (Unsplash). Fallback til generisk bil. */
 export const MERKE_IMAGES: Record<string, string> = {
-  bmw: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80",
-  audi: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&q=80",
-  volvo: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&q=80",
-  volkswagen: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80",
-  "mercedes-benz": "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80",
-  toyota: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800&q=80",
-  nissan: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80",
-  ford: "https://images.unsplash.com/photo-1619682817481-e994891cd1f5?w=800&q=80",
-  hyundai: "https://images.unsplash.com/photo-1614200187524-dc4b892acf16?w=800&q=80",
-  kia: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&q=80",
-  mazda: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=800&q=80",
-  skoda: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80",
-  peugeot: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80",
-  renault: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80",
-  opel: "https://images.unsplash.com/photo-1614200187524-dc4b892acf16?w=800&q=80",
-  honda: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800&q=80",
-  mitsubishi: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80",
-  seat: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80",
-  citroen: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80",
-  subaru: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=800&q=80",
+  bmw: "/bmw.png",
+  audi: "/audi.png",
+  volvo: "/volvo.png",
+  volkswagen: "/volkswagen.png",
+  "mercedes-benz": "/mercedes.png",
+  toyota: "/toyota.png",
+  nissan: "/nissan.png",
+  ford: "/ford.png",
+  hyundai: "/hyundai.png",
+  kia: "/kia.png",
+  mazda: "/mazda.png",
+  skoda: "/skoda.png",
+  peugeot: "/peugeot.png",
+  renault: "/renault.png",
+  opel: "/opel.png",
+  honda: "/honda.png",
+  mitsubishi: "/mitsubishi.png",
+  seat: "/seat.png",
+  citroen: "/citroen.png",
+  subaru: "/subaru.png",
 };
 
-const DEFAULT_MERKE_IMAGE = "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80";
+const DEFAULT_MERKE_IMAGE = "";
 
 export function getMerkeImage(merkeSlug: string): string {
   return MERKE_IMAGES[merkeSlug] ?? DEFAULT_MERKE_IMAGE;

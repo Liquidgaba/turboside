@@ -38,7 +38,7 @@ import {
 import ModellHero from "@/components/ModellHero";
 import { BASE_URL } from "@/lib/site";
 
-const TURBO_IMAGE = "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80";
+const TURBO_IMAGE = "/blueprint.png";
 
 type Props = {
   params: Promise<{ leverandor: string; slug: string }>;
