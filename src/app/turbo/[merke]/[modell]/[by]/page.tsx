@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import {
   getModellBySlug,
   modellSiderMedInnhold,
-  type Bilmerke,
   INGRESS_VARIANTS_BY,
   getIngressVariantIndex,
   getMerkeImage,
@@ -19,13 +18,17 @@ type Props = {
   params: Promise<{ merke: string; modell: string; by: string }>;
 };
 
+/** Antall byer som pre-genereres ved build (største byer). Resten rendres on-demand for å unngå ENOSPC på Vercel. */
+const PREBUILD_BY_COUNT = 50;
+
 function getByPageStaticParams(): { merke: string; modell: string; by: string }[] {
   const params: { merke: string; modell: string; by: string }[] = [];
+  const byerToPrebuild = byer.slice(0, PREBUILD_BY_COUNT);
   for (const merkeSlug of Object.keys(modellSiderMedInnhold)) {
     const set = modellSiderMedInnhold[merkeSlug];
     if (set) {
       for (const modellSlug of set) {
-        for (const by of byer) {
+        for (const by of byerToPrebuild) {
           params.push({ merke: merkeSlug, modell: modellSlug, by: by.slug });
         }
       }
@@ -33,6 +36,8 @@ function getByPageStaticParams(): { merke: string; modell: string; by: string }[
   }
   return params;
 }
+
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   return getByPageStaticParams();
@@ -177,7 +182,7 @@ function ModellInnholdBy({
           </div>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             <blockquote className="relative rounded-2xl border-2 border-sky-200 bg-white p-6 shadow-lg shadow-sky-100/50">
-              <span className="absolute -top-2 left-6 text-4xl font-serif text-sky-200">"</span>
+              <span className="absolute -top-2 left-6 text-4xl font-serif text-sky-200">{"\u201C"}</span>
               <p className="relative mt-2 text-slate-700">&ldquo;Rask respons på forespørsel for turbo til min {modellNavn}. Fikk tydelig tilbud og god dialog – anbefales for alle i {byNavn}.&rdquo;</p>
               <footer className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
                 <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-sky-600 text-sm font-bold text-white">K</div>
@@ -185,7 +190,7 @@ function ModellInnholdBy({
               </footer>
             </blockquote>
             <blockquote className="relative rounded-2xl border-2 border-emerald-200 bg-white p-6 shadow-lg shadow-emerald-100/50">
-              <span className="absolute -top-2 left-6 text-4xl font-serif text-emerald-200">"</span>
+              <span className="absolute -top-2 left-6 text-4xl font-serif text-emerald-200">{"\u201C"}</span>
               <p className="relative mt-2 text-slate-700">&ldquo;Enkelt å sende inn detaljene fra {byNavn}. De ringte og avklarte motorkode – anbefales.&rdquo;</p>
               <footer className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
                 <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 text-sm font-bold text-white">M</div>
@@ -193,7 +198,7 @@ function ModellInnholdBy({
               </footer>
             </blockquote>
             <blockquote className="relative rounded-2xl border-2 border-amber-200 bg-white p-6 shadow-lg shadow-amber-100/50">
-              <span className="absolute -top-2 left-6 text-4xl font-serif text-amber-200">"</span>
+              <span className="absolute -top-2 left-6 text-4xl font-serif text-amber-200">{"\u201C"}</span>
               <p className="relative mt-2 text-slate-700">&ldquo;Fikk god hjelp med å finne riktig turbo til min bil. Profesjonelt og ryddig – også for oss i {byNavn}.&rdquo;</p>
               <footer className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
                 <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-amber-600 text-sm font-bold text-white">E</div>

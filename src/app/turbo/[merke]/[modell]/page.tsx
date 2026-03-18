@@ -162,7 +162,7 @@ function ModellInnhold({ merkeNavn, modellNavn }: { merkeNavn: string; modellNav
           </div>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             <blockquote className="relative rounded-2xl border-2 border-sky-200 bg-white p-6 shadow-lg shadow-sky-100/50">
-              <span className="absolute -top-2 left-6 text-4xl font-serif text-sky-200">"</span>
+              <span className="absolute -top-2 left-6 text-4xl font-serif text-sky-200">{"\u201C"}</span>
               <p className="relative mt-2 text-slate-700">&ldquo;Rask respons på forespørsel for turbo til min {modellNavn}. Fikk tydelig tilbud og god dialog.&rdquo;</p>
               <footer className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
                 <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-sky-600 text-sm font-bold text-white">K</div>
@@ -170,7 +170,7 @@ function ModellInnhold({ merkeNavn, modellNavn }: { merkeNavn: string; modellNav
               </footer>
             </blockquote>
             <blockquote className="relative rounded-2xl border-2 border-emerald-200 bg-white p-6 shadow-lg shadow-emerald-100/50">
-              <span className="absolute -top-2 left-6 text-4xl font-serif text-emerald-200">"</span>
+              <span className="absolute -top-2 left-6 text-4xl font-serif text-emerald-200">{"\u201C"}</span>
               <p className="relative mt-2 text-slate-700">&ldquo;Enkelt å sende inn detaljene. De ringte og avklarte motorkode – anbefales.&rdquo;</p>
               <footer className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
                 <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 text-sm font-bold text-white">M</div>
@@ -178,7 +178,7 @@ function ModellInnhold({ merkeNavn, modellNavn }: { merkeNavn: string; modellNav
               </footer>
             </blockquote>
             <blockquote className="relative rounded-2xl border-2 border-amber-200 bg-white p-6 shadow-lg shadow-amber-100/50">
-              <span className="absolute -top-2 left-6 text-4xl font-serif text-amber-200">"</span>
+              <span className="absolute -top-2 left-6 text-4xl font-serif text-amber-200">{"\u201C"}</span>
               <p className="relative mt-2 text-slate-700">&ldquo;Fikk god hjelp med å finne riktig turbo. Profesjonelt og ryddig.&rdquo;</p>
               <footer className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
                 <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-amber-600 text-sm font-bold text-white">E</div>
@@ -199,8 +199,7 @@ function ModellInnhold({ merkeNavn, modellNavn }: { merkeNavn: string; modellNav
 function getModellSideInnhold(
   merke: Bilmerke,
   modell: string,
-  merkeSlug: string,
-  _modellSlug: string
+  merkeSlug: string
 ): {
   heroTitle: string;
   heroDescription: string;
@@ -233,7 +232,7 @@ export default async function ModellPage({ params }: Props) {
   if (!data) notFound();
 
   const { merke, modell } = data;
-  const innhold = getModellSideInnhold(merke, modell, merkeSlug, modellSlug);
+  const innhold = getModellSideInnhold(merke, modell, merkeSlug);
 
   return (
     <div className="min-h-screen bg-slate-50">
