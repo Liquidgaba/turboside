@@ -19,7 +19,7 @@ type Props = {
 };
 
 /** Antall byer som pre-genereres ved build (største byer). Resten rendres on-demand for å unngå ENOSPC på Vercel. */
-const PREBUILD_BY_COUNT = 50;
+const PREBUILD_BY_COUNT = 20;
 
 function getByPageStaticParams(): { merke: string; modell: string; by: string }[] {
   const params: { merke: string; modell: string; by: string }[] = [];
