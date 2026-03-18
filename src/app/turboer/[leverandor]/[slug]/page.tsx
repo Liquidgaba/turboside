@@ -1,40 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  getBorgWarnerTurboBySlug,
-  getAllBorgWarnerSlugs,
-  BORG_WARNER_NAVN,
-} from "@/data/borgwarner-turbo";
-import {
-  getGarrettTurboBySlug,
-  getAllGarrettSlugs,
-  GARRETT_NAVN,
-} from "@/data/garrett-turbo";
-import {
-  getHolsethTurboBySlug,
-  getAllHolsethSlugs,
-  HOLSETH_NAVN,
-} from "@/data/holseth-turbo";
-import {
-  getSchwitzerTurboBySlug,
-  getAllSchwitzerSlugs,
-  SCHWITZER_NAVN,
-} from "@/data/schwitzer-turbo";
-import {
-  getIhiTurboBySlug,
-  getAllIhiSlugs,
-  IHI_NAVN,
-} from "@/data/ihi-turbo";
-import {
-  getMitsubishiTurboBySlug,
-  getAllMitsubishiSlugs,
-  MITSUBISHI_NAVN,
-} from "@/data/mitsubishi-turbo";
-import {
-  getAndreTurboBySlug,
-  getAllAndreSlugs,
-  ANDRE_TURBOER_NAVN,
-} from "@/data/andre-turbo";
+import { getBorgWarnerTurboBySlug, BORG_WARNER_NAVN } from "@/data/borgwarner-turbo";
+import { getGarrettTurboBySlug, GARRETT_NAVN } from "@/data/garrett-turbo";
+import { getHolsethTurboBySlug, HOLSETH_NAVN } from "@/data/holseth-turbo";
+import { getSchwitzerTurboBySlug, SCHWITZER_NAVN } from "@/data/schwitzer-turbo";
+import { getIhiTurboBySlug, IHI_NAVN } from "@/data/ihi-turbo";
+import { getMitsubishiTurboBySlug, MITSUBISHI_NAVN } from "@/data/mitsubishi-turbo";
+import { getAndreTurboBySlug, ANDRE_TURBOER_NAVN } from "@/data/andre-turbo";
 import ModellHero from "@/components/ModellHero";
 import { BASE_URL } from "@/lib/site";
 
@@ -78,42 +50,9 @@ function getTurboData(leverandor: string, slug: string): TurboData | null {
   return null;
 }
 
-function getStaticParamsForLeverandor(leverandor: string): { leverandor: string; slug: string }[] {
-  if (leverandor === "borgwarner") {
-    return getAllBorgWarnerSlugs().map((slug) => ({ leverandor: "borgwarner", slug }));
-  }
-  if (leverandor === "garrett") {
-    return getAllGarrettSlugs().map((slug) => ({ leverandor: "garrett", slug }));
-  }
-  if (leverandor === "holseth") {
-    return getAllHolsethSlugs().map((slug) => ({ leverandor: "holseth", slug }));
-  }
-  if (leverandor === "schwitzer") {
-    return getAllSchwitzerSlugs().map((slug) => ({ leverandor: "schwitzer", slug }));
-  }
-  if (leverandor === "ihi") {
-    return getAllIhiSlugs().map((slug) => ({ leverandor: "ihi", slug }));
-  }
-  if (leverandor === "mitsubishi") {
-    return getAllMitsubishiSlugs().map((slug) => ({ leverandor: "mitsubishi", slug }));
-  }
-  if (leverandor === "andre-turboer") {
-    return getAllAndreSlugs().map((slug) => ({ leverandor: "andre-turboer", slug }));
-  }
-  return [];
-}
-
-export async function generateStaticParams() {
-  return [
-    ...getStaticParamsForLeverandor("borgwarner"),
-    ...getStaticParamsForLeverandor("garrett"),
-    ...getStaticParamsForLeverandor("holseth"),
-    ...getStaticParamsForLeverandor("schwitzer"),
-    ...getStaticParamsForLeverandor("ihi"),
-    ...getStaticParamsForLeverandor("mitsubishi"),
-    ...getStaticParamsForLeverandor("andre-turboer"),
-  ];
-}
+/** ISR: ingen pre-render ved build – sidene genereres on-demand og caches. Holder bygg lite og raskt. */
+export const dynamicParams = true;
+export const revalidate = 86400; // 24 timer
 
 export async function generateMetadata({ params }: Props) {
   const { leverandor, slug } = await params;

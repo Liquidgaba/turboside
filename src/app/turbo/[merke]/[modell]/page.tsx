@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   getModellBySlug,
-  modellSiderMedInnhold,
   type Bilmerke,
   INGRESS_VARIANTS,
   getIngressVariantIndex,
@@ -19,18 +18,9 @@ type Props = {
   params: Promise<{ merke: string; modell: string }>;
 };
 
-function getModellStaticParams(): { merke: string; modell: string }[] {
-  const params: { merke: string; modell: string }[] = [];
-  for (const merkeSlug of Object.keys(modellSiderMedInnhold)) {
-    const set = modellSiderMedInnhold[merkeSlug];
-    if (set) for (const modellSlug of set) params.push({ merke: merkeSlug, modell: modellSlug });
-  }
-  return params;
-}
-
-export async function generateStaticParams() {
-  return getModellStaticParams();
-}
+/** ISR: ingen pre-render ved build – sidene genereres on-demand og caches. Holder bygg lite og raskt. */
+export const dynamicParams = true;
+export const revalidate = 86400; // 24 timer
 
 export async function generateMetadata({ params }: Props) {
   const { merke, modell } = await params;

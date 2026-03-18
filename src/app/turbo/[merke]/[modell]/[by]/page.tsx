@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   getModellBySlug,
-  modellSiderMedInnhold,
   INGRESS_VARIANTS_BY,
   getIngressVariantIndex,
   getMerkeImage,
@@ -18,30 +17,9 @@ type Props = {
   params: Promise<{ merke: string; modell: string; by: string }>;
 };
 
-/** Antall byer som pre-genereres ved build (største byer). Resten rendres on-demand for å unngå ENOSPC på Vercel. */
-const PREBUILD_BY_COUNT = 20;
-
-function getByPageStaticParams(): { merke: string; modell: string; by: string }[] {
-  const params: { merke: string; modell: string; by: string }[] = [];
-  const byerToPrebuild = byer.slice(0, PREBUILD_BY_COUNT);
-  for (const merkeSlug of Object.keys(modellSiderMedInnhold)) {
-    const set = modellSiderMedInnhold[merkeSlug];
-    if (set) {
-      for (const modellSlug of set) {
-        for (const by of byerToPrebuild) {
-          params.push({ merke: merkeSlug, modell: modellSlug, by: by.slug });
-        }
-      }
-    }
-  }
-  return params;
-}
-
+/** Ingen by-sider pre-bygges – alle rendres on-demand og caches 24t. Unngår Vercel 80MB deploy-grense. SEO uendret: sitemap + alle URL-er virker. */
 export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  return getByPageStaticParams();
-}
+export const revalidate = 86400; // 24 timer – første besøk rendrer, deretter cache ved edge
 
 export async function generateMetadata({ params }: Props) {
   const { merke, modell, by } = await params;

@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getMerkeBySlug, getAllMerkeSlugs, modelToSlug } from "@/data/biler";
+import { getMerkeBySlug, modelToSlug } from "@/data/biler";
 import { BASE_URL } from "@/lib/site";
 
 type Props = {
   params: Promise<{ merke: string }>;
 };
 
-export async function generateStaticParams() {
-  return getAllMerkeSlugs().map((merke) => ({ merke }));
-}
+/** ISR: ingen pre-render ved build – sidene genereres on-demand og caches. Holder bygg lite og raskt. */
+export const dynamicParams = true;
+export const revalidate = 86400; // 24 timer
 
 export async function generateMetadata({ params }: Props) {
   const { merke } = await params;
